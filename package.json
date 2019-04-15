@@ -1,0 +1,23 @@
+{
+  "name": "npm-node-assignment",
+  "version": "1.0.0",
+  "description": "unit-12-homework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denisezou/unit-12.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denisezou/unit-12/issues"
+  },
+  "homepage": "https://github.com/denisezou/unit-12#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1",
+    "mysql": "^2.16.0"
+  }
+}
