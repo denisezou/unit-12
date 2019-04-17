@@ -37,15 +37,13 @@ connection.query('SELECT * from products', function (err, rows, fields) {
     if (!err) {
         console.log(rows)
         promptCustomer()
-    }
-    else {
+    } else {
         console.log('error')
     }
 });
 
 //using inquirer to ask the user questions about their purchase
-var questions = [
-    {
+var questions = [{
         type: 'input',
         name: 'whatId',
         message: 'What is the ID of the item you want to buy?',
@@ -72,52 +70,71 @@ var questions = [
             return 'Please enter a quantity, (hint: a number)';
 
         }
-    }];
+    }
+];
 
 
 
 function promptCustomer() {
     inquirer.prompt(questions).then(function (answers) {
-        console.log(JSON.stringify(answers, null, ' '));
-    });
+                console.log(JSON.stringify(answers, null, ' '));
+                connection.query("UPDATE products SET ? WHERE ?",
+                    [{
+                            stock_quantity: answers.howMany,
+                        },
+                        {
+                            item_id: answers.whatId
+                        }
+                    ],
 
-}
-
-function checkStock() {
-    console.log('Let me look in the back... 1 sec')
-    var query = connection.query(
-        "UPDATE products SET ? WHERE ?",
-        [{
-            stock_quantity:
-},
-        {
-            item_id: 
-}],
-
-    )
-
-}
-
-connection.end();
+                    function (err, res) {
+                        if (err) throw err;
+                        console.log(res.affectedRows + " update complete\n");
+                        readProducts();
+                    });
+            });
+        }
 
 
 
+            /* function checkStock() {
+        console.log('Let me look in the back... 1 sec...\n');
+        var query = connection.query(
 
-/*
-function amazonSearch() {
-    inquirer
-        .prompt({
-            name: "prodType",
-            type: "rawlist",
-            message: "Select a type of product...we're family owned and our stock is limited",
-            choices: [
-                "Fitness",
-                "Leisure",
-                "School"
-            ]
-        })
+                "UPDATE products SET ? WHERE ?"
+
 */
 
-//the 10 products will be ankle weights, therapy ball, yoga mat,
-// vape, fidget spinner, ipod,
-// book, fountain pen, lunch box, apple
+            function readProducts() {
+                console.log("Pulling the stock...\n");
+                connection.query("SELECT * FROM products", function (err, res) {
+                    if (err) throw err;
+                    // Log all results of the SELECT statement
+                    console.log(res);
+                    connection.end();
+
+                });
+            }
+
+
+
+
+
+            /*
+            function amazonSearch() {
+                inquirer
+                    .prompt({
+                        name: "prodType",
+                        type: "rawlist",
+                        message: "Select a type of product...we're family owned and our stock is limited",
+                        choices: [
+                            "Fitness",
+                            "Leisure",
+                            "School"
+                        ]
+                    })
+            */
+
+            //the 10 products will be ankle weights, therapy ball, yoga mat,
+            // vape, fidget spinner, ipod,
+            // book, fountain pen, lunch box, apple
